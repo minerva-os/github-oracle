@@ -1,0 +1,16 @@
+version: "3"
+services:
+  postgres:
+    image: postgres
+    container_name: oracle_postgres
+    ports:
+      - 8090:5432
+    environment:
+      - POSTGRES_DB=oracle
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=HxjwaE5srm3yiwBH
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    
+volumes:
+  postgres:
