@@ -1,6 +1,9 @@
 pragma solidity ^0.6.0;
 
 import "@chainlink/contracts/src/v0.6/ChainlinkClient.sol";
+import {
+    ILendingPool
+} from "@aave/protocol-v2/contracts/interfaces/ILendingPool.sol";
 
 contract SampleConsumer is ChainlinkClient {
     bytes32 private userId;
@@ -33,7 +36,27 @@ contract SampleConsumer is ChainlinkClient {
         setPrCheck();
     }
 
-    function setPrCheck() public {
+    function deposit(
+        address pool,
+        address token,
+        address user,
+        uint256 amount
+    ) public returns (bool) {
+        ILendingPool(pool).deposit(token, amount, user, 0);
+        return true;
+    }
+
+    function withdraw(
+        address pool,
+        address token,
+        uint256 amount,
+        address user
+    ) public returns (bool) {
+        ILendingPool(pool).withdraw(token, amount, user);
+        return true;
+    }
+
+    function setPrCheck() private {
         Chainlink.Request memory req =
             buildChainlinkRequest(
                 alarmJobId,
@@ -45,7 +68,7 @@ contract SampleConsumer is ChainlinkClient {
     }
 
     function requestUserId(string memory filter)
-        public
+        private
         returns (bytes32 requestId)
     {
         Chainlink.Request memory request =
