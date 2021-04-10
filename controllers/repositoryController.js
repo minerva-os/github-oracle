@@ -32,6 +32,7 @@ exports.getClosedPulls = async (req, res) => {
     var user = data.map(({ id }) => id);
 
     res.json({
+      count: user.length,
       data: user,
     });
   } catch (err) {
